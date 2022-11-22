@@ -13,12 +13,12 @@ import axios from "axios";
 
 export default function SignUpScreen({ setToken }) {
   const navigation = useNavigation();
-  const [email, setEmail] = useState(null);
-  const [username, setUsername] = useState(null);
-  const [description, setDescription] = useState();
-  const [password, setPassword] = useState();
-  const [confirmPwd, setConfirmPwd] = useState();
-  const [errorMsg, setErrorMsg] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [description, setDescription] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPwd, setConfirmPwd] = useState("");
+  const [errorMsg, setErrorMsg] = useState();
 
   const handleSignUp = async () => {
     try {
@@ -33,7 +33,8 @@ export default function SignUpScreen({ setToken }) {
         "https://express-airbnb-api.herokuapp.com/user/sign_up",
         data
       );
-      console.log(Object.values(signUp));
+      console.log(signUp.data);
+      setToken(signUp.data.token);
     } catch (error) {
       console.log(error.message);
     }
@@ -53,7 +54,7 @@ export default function SignUpScreen({ setToken }) {
           style={stylesSignUp.input}
           placeholder="Email"
           value={email}
-          onChange={(email) => {
+          onChangeText={(email) => {
             setEmail(email);
           }}
         />
@@ -61,7 +62,7 @@ export default function SignUpScreen({ setToken }) {
           style={stylesSignUp.input}
           placeholder="Username"
           value={username}
-          onChange={(username) => {
+          onChangeText={(username) => {
             setUsername(username);
           }}
         />
@@ -71,7 +72,7 @@ export default function SignUpScreen({ setToken }) {
           numberOfLines={4}
           placeholder="Describe yourself..."
           value={description}
-          onChange={(description) => {
+          onChangeText={(description) => {
             setDescription(description);
           }}
           Up
