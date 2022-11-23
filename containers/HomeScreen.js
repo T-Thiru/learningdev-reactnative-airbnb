@@ -45,7 +45,7 @@ export default function HomeScreen() {
       data={dataRooms}
       keyExtractor={(room) => room._id}
       renderItem={(room) => {
-        <Text>{room._id}</Text>;
+        <Text>{Object.keys(room)}</Text>;
       }}
     />
   );
