@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import HomeScreen from "./containers/HomeScreen";
-import ProfileScreen from "./containers/ProfileScreen";
-import SignInScreen from "./containers/SignInScreen";
-import SignUpScreen from "./containers/SignUpScreen";
-import SettingsScreen from "./containers/SettingsScreen";
-import SplashScreen from "./containers/SplashScreen";
+import HomeScreen from "./HomeScreen";
+import ProfileScreen from "./ProfileScreen";
+import SignInScreen from "./SignInScreen";
+import SignUpScreen from "./SignUpScreen";
+import SettingsScreen from "./SettingsScreen";
+import SplashScreen from "./SplashScreen";
+import Nvigation from "./containers/Nvigation";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+
+const UserContext = createContext({});
+
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
+  const [user, setUser] = useState();
 
   const setToken = async (token) => {
     if (token) {
@@ -51,15 +56,16 @@ export default function App() {
 
   return (
     <NavigationContainer>
+        <UserContext.Provider value={{ user }}>
       <Stack.Navigator>
         {userToken === null ? (
           // No token found, user isn't signed in
           <>
             <Stack.Screen name="SignIn">
-              {() => <SignInScreen setToken={setToken} />}
+              {() => <SignInScreen setToken={setToken} setUser={setUser} />}
             </Stack.Screen>
             <Stack.Screen name="SignUp">
-              {() => <SignUpScreen setToken={setToken} />}
+              {() => <SignUpScreen setToken={setToken} setUser={setUser} />}
             </Stack.Screen>
           </>
         ) : (
@@ -92,7 +98,7 @@ export default function App() {
                           headerTitleStyle: { color: "white" },
                         }}
                       >
-                        {() => <HomeScreen />}
+                        {() => <HomeScreen user={user} />}
                       </Stack.Screen>
 
                       <Stack.Screen
@@ -137,6 +143,7 @@ export default function App() {
           </Stack.Screen>
         )}
       </Stack.Navigator>
+    </UserContext.Provider>
     </NavigationContainer>
   );
 }

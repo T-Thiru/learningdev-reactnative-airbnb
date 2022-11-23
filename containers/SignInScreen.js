@@ -10,10 +10,30 @@ import {
 } from "react-native";
 import stylesSignIn from "../styles/styleSignIn";
 
-export default function SignInScreen({ setToken }) {
+export default function SignInScreen({ setToken, setUser }) {
   const navigation = useNavigation();
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState();
+
+  const handleSignIn = async () => {
+    try {
+      const data = {
+        email,
+        password,
+      };
+
+      const signIn = await axios.post(
+        "https://express-airbnb-api.herokuapp.com/user/log_in",
+        data
+      );
+      console.log(signIn.data);
+      setUser(signIn.data);
+      setToken(signUp.data.token);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <View>
       <View style={stylesSignIn.containerLogo}>
