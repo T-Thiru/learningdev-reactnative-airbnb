@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/core";
-import { Button, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { useContext } from "react";
+import { Button } from "@react-native-material/core";
 
 export default function HomeScreen() {
   // const user = useContext(UserContext);

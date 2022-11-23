@@ -12,6 +12,7 @@ import {
 import stylesSignIn from "../styles/styleSignIn";
 import axios from "axios";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function SignInScreen({ setToken, setUser }) {
   const navigation = useNavigation();

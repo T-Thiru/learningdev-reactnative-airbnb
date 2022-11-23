@@ -12,6 +12,7 @@ import { useState } from "react";
 import stylesSignUp from "../styles/styleSignUp";
 import axios from "axios";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function SignUpScreen({ setToken, setUser }) {
   const navigation = useNavigation();
@@ -28,6 +29,7 @@ export default function SignUpScreen({ setToken, setUser }) {
 
   const handleSignUp = async () => {
     try {
+      setIsLoading(true);
       const data = {
         email,
         username,
@@ -42,8 +44,10 @@ export default function SignUpScreen({ setToken, setUser }) {
       // console.log(signUp.data);
       setUser(signUp.data);
       setToken(signUp.data.token);
+      setIsLoading(false);
     } catch (error) {
       console.log(error.message);
+      setIsLoading(false);
     }
   };
 
