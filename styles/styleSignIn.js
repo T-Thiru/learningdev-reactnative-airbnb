@@ -10,8 +10,8 @@ const stylesSignIn = StyleSheet.create({
   },
 
   input: {
-    borderBottomColor: "red",
-    borderBottomWidth: 2,
+    // borderBottomColor: "none",
+    // borderBottomWidth: 2,
     height: 50,
     marginHorizontal: 30,
     marginVertical: 20,

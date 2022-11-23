@@ -10,8 +10,6 @@ const stylesSignUp = StyleSheet.create({
   },
 
   input: {
-    borderBottomColor: "red",
-    borderBottomWidth: 2,
     height: 50,
     marginHorizontal: 30,
     marginVertical: 15,
@@ -19,8 +17,7 @@ const stylesSignUp = StyleSheet.create({
 
   inputMultiple: {
     height: 80,
-    borderColor: "red",
-    borderWidth: 2,
+
     marginHorizontal: 30,
     marginVertical: 20,
   },

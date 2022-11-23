@@ -1,7 +1,6 @@
 import {
   Button,
   Text,
-  TextInput,
   View,
   Image,
   TouchableOpacity,
@@ -13,6 +12,8 @@ import stylesSignUp from "../styles/styleSignUp";
 import axios from "axios";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Ionicons } from "@expo/vector-icons";
+import { TextInput, IconButton } from "@react-native-material/core";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function SignUpScreen({ setToken, setUser }) {
   const navigation = useNavigation();
@@ -24,6 +25,10 @@ export default function SignUpScreen({ setToken, setUser }) {
   const [errorMsg, setErrorMsg] = useState();
   const [color, setColor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [visiblePwd, setVisiblePwd] = useState(false);
+  const [securePwd, setSecurePwd] = useState(true);
+  const [visiblePwdConfirm, setVisiblePwdConfirm] = useState(false);
+  const [securePwdConfirm, setSecurePwdConfirm] = useState(true);
 
   // const user = useContext(UserContext);
 
@@ -63,32 +68,38 @@ export default function SignUpScreen({ setToken, setUser }) {
         </View>
         <View>
           <TextInput
+            color="red"
+            variant="standard"
             style={[
               stylesSignUp.input,
               { backgroundColor: email ? "" : color },
             ]}
-            placeholder="Email"
+            label="Email"
             value={email}
             onChangeText={(email) => {
               setEmail(email);
             }}
           />
           <TextInput
+            color="red"
+            variant="standard"
             style={[
               stylesSignUp.input,
               { backgroundColor: username ? "" : color },
             ]}
-            placeholder="Username"
+            label="Username"
             value={username}
             onChangeText={(username) => {
               setUsername(username);
             }}
           />
           <TextInput
+            color="red"
+            variant="standard"
             style={stylesSignUp.inputMultiple}
             multiline
             numberOfLines={4}
-            placeholder="Describe yourself..."
+            label="Describe yourself..."
             value={description}
             onChangeText={(description) => {
               setDescription(description);
@@ -96,24 +107,55 @@ export default function SignUpScreen({ setToken, setUser }) {
             Up
           />
           <TextInput
+            color="red"
+            variant="standard"
+            trailing={(props) => (
+              <IconButton
+                onPress={() => {
+                  setVisiblePwd(!visiblePwd);
+                  setSecurePwd(!securePwd);
+                }}
+                icon={(props) => (
+                  <Icon name={visiblePwd ? "eye-off" : "eye"} {...props} />
+                )}
+                {...props}
+              />
+            )}
             style={[
               stylesSignUp.input,
               { backgroundColor: password ? "" : color },
             ]}
-            placeholder="Password"
-            secureTextEntry={true}
+            label="Password"
+            secureTextEntry={securePwd}
             value={password}
             onChangeText={(password) => {
               setPassword(password);
             }}
           />
           <TextInput
+            trailing={(props) => (
+              <IconButton
+                onPress={() => {
+                  setVisiblePwdConfirm(!visiblePwdConfirm);
+                  setSecurePwdConfirm(!securePwdConfirm);
+                }}
+                icon={(props) => (
+                  <Icon
+                    name={visiblePwdConfirm ? "eye-off" : "eye"}
+                    {...props}
+                  />
+                )}
+                {...props}
+              />
+            )}
+            color="red"
+            variant="standard"
             style={[
               stylesSignUp.input,
               { backgroundColor: confirmPwd ? "" : color },
             ]}
-            placeholder="Confirm Password"
-            secureTextEntry={true}
+            label="Confirm Password"
+            secureTextEntry={securePwdConfirm}
             value={confirmPwd}
             onChangeText={(confirmPwd) => {
               setConfirmPwd(confirmPwd);

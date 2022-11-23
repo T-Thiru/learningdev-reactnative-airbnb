@@ -1,9 +1,8 @@
 import { useNavigation } from "@react-navigation/core";
-import { useReducer, useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Text,
-  TextInput,
   View,
   TouchableOpacity,
   Image,
@@ -13,6 +12,8 @@ import stylesSignIn from "../styles/styleSignIn";
 import axios from "axios";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Ionicons } from "@expo/vector-icons";
+import { TextInput, IconButton } from "@react-native-material/core";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function SignInScreen({ setToken, setUser }) {
   const navigation = useNavigation();
@@ -21,6 +22,8 @@ export default function SignInScreen({ setToken, setUser }) {
   const [errorMsg, setErrorMsg] = useState();
   const [color, setColor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [visiblePwd, setVisiblePwd] = useState(false);
+  const [securePwd, setSecurePwd] = useState(true);
 
   const handleSignIn = async () => {
     try {
@@ -59,6 +62,8 @@ export default function SignInScreen({ setToken, setUser }) {
         </View>
         <View>
           <TextInput
+            variant="standard"
+            color="red"
             autoCapitalize={"none"}
             style={[
               stylesSignIn.input,
@@ -72,12 +77,26 @@ export default function SignInScreen({ setToken, setUser }) {
           />
 
           <TextInput
+            trailing={(props) => (
+              <IconButton
+                onPress={() => {
+                  setVisiblePwd(!visiblePwd);
+                  setSecurePwd(!securePwd);
+                }}
+                icon={(props) => (
+                  <Icon name={visiblePwd ? "eye-off" : "eye"} {...props} />
+                )}
+                {...props}
+              />
+            )}
+            variant="standard"
+            color="red"
             style={[
               stylesSignIn.input,
               { backgroundColor: password ? "" : color },
             ]}
             placeholder="Password"
-            secureTextEntry={true}
+            secureTextEntry={securePwd}
             value={password}
             onChangeText={(password) => {
               setPassword(password);
