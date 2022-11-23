@@ -4,17 +4,15 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import HomeScreen from "./HomeScreen";
-import ProfileScreen from "./ProfileScreen";
-import SignInScreen from "./SignInScreen";
-import SignUpScreen from "./SignUpScreen";
-import SettingsScreen from "./SettingsScreen";
-import SplashScreen from "./SplashScreen";
-import Nvigation from "./containers/Nvigation";
+import HomeScreen from "./containers/HomeScreen";
+import ProfileScreen from "./containers/ProfileScreen";
+import SignInScreen from "./containers/SignInScreen";
+import SignUpScreen from "./containers/SignUpScreen";
+import SettingsScreen from "./containers/SettingsScreen";
+import SplashScreen from "./containers/SplashScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
 
 const UserContext = createContext({});
 
@@ -56,94 +54,99 @@ export default function App() {
 
   return (
     <NavigationContainer>
-        <UserContext.Provider value={{ user }}>
-      <Stack.Navigator>
-        {userToken === null ? (
-          // No token found, user isn't signed in
-          <>
-            <Stack.Screen name="SignIn">
-              {() => <SignInScreen setToken={setToken} setUser={setUser} />}
-            </Stack.Screen>
-            <Stack.Screen name="SignUp">
-              {() => <SignUpScreen setToken={setToken} setUser={setUser} />}
-            </Stack.Screen>
-          </>
-        ) : (
-          // User is signed in ! 🎉
-          <Stack.Screen name="Tab" options={{ headerShown: false }}>
-            {() => (
-              <Tab.Navigator
-                screenOptions={{
-                  headerShown: false,
-                  tabBarActiveTintColor: "tomato",
-                  tabBarInactiveTintColor: "gray",
-                }}
-              >
-                <Tab.Screen
-                  name="TabHome"
-                  options={{
-                    tabBarLabel: "Home",
-                    tabBarIcon: ({ color, size }) => (
-                      <Ionicons name={"ios-home"} size={size} color={color} />
-                    ),
+      <UserContext.Provider value={{ user }}>
+        <Stack.Navigator>
+          {userToken === null ? (
+            // No token found, user isn't signed in
+            <>
+              <Stack.Screen name="SignIn">
+                {() => <SignInScreen setToken={setToken} setUser={setUser} />}
+              </Stack.Screen>
+              <Stack.Screen name="SignUp">
+                {() => <SignUpScreen setToken={setToken} setUser={setUser} />}
+              </Stack.Screen>
+            </>
+          ) : (
+            // User is signed in ! 🎉
+            <Stack.Screen name="Tab" options={{ headerShown: false }}>
+              {() => (
+                <Tab.Navigator
+                  screenOptions={{
+                    headerShown: false,
+                    tabBarActiveTintColor: "tomato",
+                    tabBarInactiveTintColor: "gray",
                   }}
                 >
-                  {() => (
-                    <Stack.Navigator>
-                      <Stack.Screen
-                        name="Home"
-                        options={{
-                          title: "My App",
-                          headerStyle: { backgroundColor: "red" },
-                          headerTitleStyle: { color: "white" },
-                        }}
-                      >
-                        {() => <HomeScreen user={user} />}
-                      </Stack.Screen>
+                  <Tab.Screen
+                    name="TabHome"
+                    options={{
+                      tabBarLabel: "Home",
+                      tabBarIcon: ({ color, size }) => (
+                        <Ionicons name={"ios-home"} size={size} color={color} />
+                      ),
+                    }}
+                  >
+                    {() => (
+                      <Stack.Navigator>
+                        <Stack.Screen
+                          name="Home"
+                          options={{
+                            title: "My App",
+                            headerStyle: { backgroundColor: "red" },
+                            headerTitleStyle: { color: "white" },
+                          }}
+                        >
+                          {() => <HomeScreen user={user} />}
+                        </Stack.Screen>
 
-                      <Stack.Screen
-                        name="Profile"
-                        options={{
-                          title: "User Profile",
-                        }}
-                      >
-                        {() => <ProfileScreen />}
-                      </Stack.Screen>
-                    </Stack.Navigator>
-                  )}
-                </Tab.Screen>
-                <Tab.Screen
-                  name="TabSettings"
-                  options={{
-                    tabBarLabel: "Settings",
-                    tabBarIcon: ({ color, size }) => (
-                      <Ionicons
-                        name={"ios-options"}
-                        size={size}
-                        color={color}
-                      />
-                    ),
-                  }}
-                >
-                  {() => (
-                    <Stack.Navigator>
-                      <Stack.Screen
-                        name="Settings"
-                        options={{
-                          title: "Settings",
-                        }}
-                      >
-                        {() => <SettingsScreen setToken={setToken} />}
-                      </Stack.Screen>
-                    </Stack.Navigator>
-                  )}
-                </Tab.Screen>
-              </Tab.Navigator>
-            )}
-          </Stack.Screen>
-        )}
-      </Stack.Navigator>
-    </UserContext.Provider>
+                        <Stack.Screen
+                          name="Profile"
+                          options={{
+                            title: "User Profile",
+                          }}
+                        >
+                          {() => <ProfileScreen user={user} />}
+                        </Stack.Screen>
+                      </Stack.Navigator>
+                    )}
+                  </Tab.Screen>
+                  <Tab.Screen
+                    name="TabSettings"
+                    options={{
+                      tabBarLabel: "Settings",
+                      tabBarIcon: ({ color, size }) => (
+                        <Ionicons
+                          name={"ios-options"}
+                          size={size}
+                          color={color}
+                        />
+                      ),
+                    }}
+                  >
+                    {() => (
+                      <Stack.Navigator>
+                        <Stack.Screen
+                          name="Settings"
+                          options={{
+                            title: "Settings",
+                          }}
+                        >
+                          {() => (
+                            <SettingsScreen
+                              setToken={setToken}
+                              setUser={setUser}
+                            />
+                          )}
+                        </Stack.Screen>
+                      </Stack.Navigator>
+                    )}
+                  </Tab.Screen>
+                </Tab.Navigator>
+              )}
+            </Stack.Screen>
+          )}
+        </Stack.Navigator>
+      </UserContext.Provider>
     </NavigationContainer>
   );
 }

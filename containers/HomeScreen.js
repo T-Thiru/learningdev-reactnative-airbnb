@@ -2,8 +2,8 @@ import { useNavigation } from "@react-navigation/core";
 import { Button, Text, View } from "react-native";
 import { useContext } from "react";
 
-export default function HomeScreen({ user }) {
-  const user = useContext(UserContext);
+export default function HomeScreen() {
+  // const user = useContext(UserContext);
   const navigation = useNavigation();
   return (
     <View>
@@ -11,7 +11,7 @@ export default function HomeScreen({ user }) {
       <Button
         title="Go to Profile"
         onPress={() => {
-          navigation.navigate("Profile", { userId: user.id });
+          navigation.navigate("Profile", { userId: "1234" });
         }}
       />
     </View>

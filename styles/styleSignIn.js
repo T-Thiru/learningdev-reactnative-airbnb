@@ -38,6 +38,10 @@ const stylesSignIn = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  error: {
+    marginHorizontal: 30,
+    color: "red",
+  },
 });
 
 export default stylesSignIn;
