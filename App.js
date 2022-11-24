@@ -14,6 +14,7 @@ import SplashScreen from "./containers/SplashScreen";
 import ArrounMeScreen from "./containers/ArrounMeScreen";
 import { Entypo } from "@expo/vector-icons";
 import RoomScreen from "./containers/RoomScreen";
+import TitleLogo from "./components/TitleLogo";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -91,13 +92,18 @@ export default function App() {
                     }}
                   >
                     {() => (
-                      <Stack.Navigator>
+                      <Stack.Navigator
+                        screenOptions={{
+                          headerTitle: (props) => <TitleLogo {...props} />,
+                        }}
+                      >
                         <Stack.Screen
                           name="Home"
                           options={{
-                            title: "HOME",
-                            headerStyle: { backgroundColor: "red" },
-                            headerTitleStyle: { color: "white" },
+                            // title: "HOME",
+                            // headerTitle: (props) => <TitleLogo {...props} />,
+                            headerStyle: { backgroundColor: "white" },
+                            // headerTitleStyle: { color: "white" },
                           }}
                         >
                           {() => <HomeScreen user={user} />}
@@ -105,9 +111,10 @@ export default function App() {
                         <Stack.Screen
                           name="Room"
                           options={{
-                            title: "Room",
-                            headerStyle: { backgroundColor: "red" },
-                            headerTitleStyle: { color: "white" },
+                            // title: "Room",
+                            // headerTitle: (props) => <TitleLogo {...props} />,
+                            headerStyle: { backgroundColor: "white" },
+                            // headerTitleStyle: { color: "white" },
                           }}
                         >
                           {() => <RoomScreen />}
@@ -115,9 +122,11 @@ export default function App() {
 
                         <Stack.Screen
                           name="Profile"
-                          options={{
-                            title: "User Profile",
-                          }}
+                          options={
+                            {
+                              // title: "User Profile",
+                            }
+                          }
                         >
                           {() => <ProfileScreen user={user} />}
                         </Stack.Screen>

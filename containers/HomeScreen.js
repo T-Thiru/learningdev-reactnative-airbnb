@@ -10,38 +10,34 @@ import {
 import { useEffect, useState } from "react";
 import { Surface } from "@react-native-material/core";
 import axios from "axios";
-import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-
-const RatingStar = ({ num }) => {
-  let rating = [];
-  const isDecimal = !Number.isInteger(num);
-  const flooredNum = Math.floor(num);
-
-  for (let i = 1; i <= 5; i++) {
-    if (num >= i) {
-      rating.push(<FontAwesome name="star" size={24} color="yellow" />);
-    }
-
-    if (num < i && rating.length < 5) {
-      rating.push(<FontAwesome name="star-o" size={24} color="black" />);
-    }
-
-    if (flooredNum === i && isDecimal) {
-      rating.push(<FontAwesome name="star-half" size={24} color="black" />);
-    }
-  }
-
-  return rating;
-};
+import Rating from "../components/Rating";
+import * as Location from "expo-location";
 
 export default function HomeScreen() {
   // const user = useContext(UserContext);
   const [dataRooms, setDataRooms] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
+  const [coords, setCoords] = useState();
+
+  // console.log(coords);
 
   useEffect(() => {
+    const askPermission = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status === "granted") {
+        let location = await Location.getCurrentPositionAsync({});
+
+        const obj = {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        };
+        setCoords(obj);
+      }
+    };
+
     const fetchRooms = async () => {
       try {
         const rooms = await axios.get(
@@ -50,51 +46,52 @@ export default function HomeScreen() {
         // console.log(Object.keys(rooms.data));
         setDataRooms(rooms.data);
         // console.log(dataRooms);
-        setIsLoading(false);
       } catch (error) {
         console.log(error.message);
       }
     };
-
+    askPermission();
     fetchRooms();
+    setIsLoading(false);
   }, []);
 
   if (isLoading === true) {
-    // We haven't finished checking for the token yet
     return <ActivityIndicator size="large" color="red" style={{ flex: 1 }} />;
   }
 
   return (
     <FlatList
-      scrollEnabled={true}
+      // scrollEnabled={true}
       data={dataRooms}
-      keyExtractor={(room) => {
-        return room._id;
+      keyExtractor={(item) => {
+        return item._id;
       }}
       renderItem={({ item }) => {
         return (
           <Surface elevation={4} category="medium" style={{ margin: 10 }}>
-            <ScrollView horizontal={true}>
-              <FlatList
-                style={{ flexDirection: "row" }}
-                data={item.photos}
-                keyExtractor={(item) => {
-                  return item.picture_id;
-                }}
-                renderItem={({ item }) => {
-                  // console.log(item);
-                  return (
-                    <Image
-                      source={{
-                        uri: item.url,
-                      }}
-                      resizeMode="center, cover"
-                      style={{ width: 410, height: 250 }}
-                    />
-                  );
-                }}
-              />
-            </ScrollView>
+            {/* <ScrollView horizontal={true}> */}
+            <FlatList
+              horizontal={true}
+              style={{ flexDirection: "row" }}
+              data={item.photos}
+              keyExtractor={(photo) => {
+                // console.log(photo);
+                return photo.picture_id;
+              }}
+              renderItem={({ item }) => {
+                // console.log(item);
+                return (
+                  <Image
+                    source={{
+                      uri: item.url,
+                    }}
+                    resizeMode={"center, cover"}
+                    style={{ width: 410, height: 250 }}
+                  />
+                );
+              }}
+            />
+            {/* </ScrollView> */}
             <View
               style={{
                 backgroundColor: "black",
@@ -112,7 +109,7 @@ export default function HomeScreen() {
             </View>
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={() => navigation.navigate("Room", { item: item })}
+              onPress={() => navigation.navigate("Room", { id: item._id })}
             >
               <View
                 style={{
@@ -142,7 +139,7 @@ export default function HomeScreen() {
                     {item.title}
                   </Text>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <RatingStar num={item.ratingValue} />
+                    <Rating num={item.ratingValue} />
                     <Text style={{ margin: 10 }}>{item.reviews} Reviews</Text>
                   </View>
                 </View>
