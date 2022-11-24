@@ -11,7 +11,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Rating from "../components/Rating";
-import { Icon } from "@react-native-material/core";
+import SwiperFlatList from "react-native-swiper-flatlist";
 import Map from "../components/Map";
 
 export default function RoomScreen() {
@@ -45,7 +45,24 @@ export default function RoomScreen() {
   return (
     <ScrollView style={{ backgroundColor: "white", flex: 1 }}>
       <View>
-        <FlatList
+        <SwiperFlatList
+          autoplay
+          autoplayDelay={2}
+          autoplayLoop
+          index={0}
+          showPagination
+          data={dataRoom.photos}
+          renderItem={({ item }) => (
+            <Image
+              source={{
+                uri: item.url,
+              }}
+              resizeMode="center, cover"
+              style={{ width: 430, height: 250 }}
+            />
+          )}
+        />
+        {/* <FlatList
           horizontal={true}
           data={dataRoom.photos}
           keyExtractor={(photo) => photo.picture_id}
@@ -60,7 +77,7 @@ export default function RoomScreen() {
               />
             );
           }}
-        ></FlatList>
+        ></FlatList> */}
         <View
           style={{
             backgroundColor: "black",
