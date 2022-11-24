@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "./containers/HomeScreen";
 import ProfileScreen from "./containers/ProfileScreen";
@@ -10,6 +11,9 @@ import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 import SplashScreen from "./containers/SplashScreen";
+import ArrounMeScreen from "./containers/ArrounMeScreen";
+import { Entypo } from "@expo/vector-icons";
+import RoomScreen from "./containers/RoomScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -49,7 +53,7 @@ export default function App() {
 
   if (isLoading === true) {
     // We haven't finished checking for the token yet
-    return <SplashScreen />;
+    return <ActivityIndicator size="large" color="red" style={{ flex: 1 }} />;
   }
 
   return (
@@ -98,6 +102,16 @@ export default function App() {
                         >
                           {() => <HomeScreen user={user} />}
                         </Stack.Screen>
+                        <Stack.Screen
+                          name="Room"
+                          options={{
+                            title: "Room",
+                            headerStyle: { backgroundColor: "red" },
+                            headerTitleStyle: { color: "white" },
+                          }}
+                        >
+                          {() => <RoomScreen />}
+                        </Stack.Screen>
 
                         <Stack.Screen
                           name="Profile"
@@ -109,6 +123,17 @@ export default function App() {
                         </Stack.Screen>
                       </Stack.Navigator>
                     )}
+                  </Tab.Screen>
+                  <Tab.Screen
+                    name="ArroundME"
+                    options={{
+                      tabBarLabel: "Arround Me",
+                      tabBarIcon: ({ color, size }) => (
+                        <Entypo name="location" size={24} color="red" />
+                      ),
+                    }}
+                  >
+                    {() => <ArrounMeScreen />}
                   </Tab.Screen>
                   <Tab.Screen
                     name="TabSettings"
