@@ -13,6 +13,7 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import Rating from "../components/Rating";
 import * as Location from "expo-location";
+import SwiperFlatList from "react-native-swiper-flatlist";
 
 export default function HomeScreen() {
   // const user = useContext(UserContext);
@@ -69,29 +70,26 @@ export default function HomeScreen() {
       renderItem={({ item }) => {
         return (
           <Surface elevation={4} category="medium" style={{ margin: 10 }}>
-            {/* <ScrollView horizontal={true}> */}
-            <FlatList
-              horizontal={true}
-              style={{ flexDirection: "row" }}
-              data={item.photos}
-              keyExtractor={(photo) => {
-                // console.log(photo);
-                return photo.picture_id;
-              }}
-              renderItem={({ item }) => {
-                // console.log(item);
-                return (
+            <View>
+              <SwiperFlatList
+                autoplay
+                autoplayDelay={2}
+                autoplayLoop
+                index={0}
+                showPagination
+                data={item.photos}
+                renderItem={({ item }) => (
                   <Image
                     source={{
                       uri: item.url,
                     }}
-                    resizeMode={"center, cover"}
+                    resizeMode="center"
                     style={{ width: 410, height: 250 }}
                   />
-                );
-              }}
-            />
-            {/* </ScrollView> */}
+                )}
+              />
+            </View>
+
             <View
               style={{
                 backgroundColor: "black",

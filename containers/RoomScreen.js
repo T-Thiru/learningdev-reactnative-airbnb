@@ -1,10 +1,10 @@
 import {
   View,
   Text,
-  FlatList,
   Image,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import React from "react";
@@ -13,11 +13,13 @@ import axios from "axios";
 import Rating from "../components/Rating";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import Map from "../components/Map";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function RoomScreen() {
   const { params } = useRoute();
   const [dataRoom, setDataRoom] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [showMoore, setShowMoore] = useState(false);
   // console.log(params.id);
 
   useEffect(() => {
@@ -57,33 +59,19 @@ export default function RoomScreen() {
               source={{
                 uri: item.url,
               }}
-              resizeMode="center, cover"
+              resizeMode="center"
               style={{ width: 430, height: 250 }}
             />
           )}
         />
-        {/* <FlatList
-          horizontal={true}
-          data={dataRoom.photos}
-          keyExtractor={(photo) => photo.picture_id}
-          renderItem={({ item }) => {
-            return (
-              <Image
-                source={{
-                  uri: item.url,
-                }}
-                resizeMode="center, cover"
-                style={{ width: 430, height: 250 }}
-              />
-            );
-          }}
-        ></FlatList> */}
+
         <View
           style={{
             backgroundColor: "black",
             width: 100,
             position: "absolute",
             bottom: 10,
+            left: 15,
 
             justifyContent: "center",
             alignItems: "center",
@@ -134,10 +122,31 @@ export default function RoomScreen() {
           style={{ width: 80, height: 80, borderRadius: 50 }}
         />
       </View>
-      <Text numberOfLines={3} ellipsizeMode="tail" style={{ margin: 10 }}>
+      <Text
+        numberOfLines={showMoore ? "" : 2}
+        ellipsizeMode="tail"
+        style={{ margin: 10 }}
+      >
         {dataRoom.description}
       </Text>
-      <Text>Show moore</Text>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginLeft: 10 }}
+      >
+        <Text>Show moore</Text>
+
+        <TouchableOpacity
+          onPress={() => {
+            setShowMoore(!showMoore);
+          }}
+        >
+          <AntDesign
+            name={showMoore ? "upcircleo" : "circledowno"}
+            size={24}
+            color="black"
+            style={{ margin: 5 }}
+          />
+        </TouchableOpacity>
+      </View>
       <Map data={dataRoom} />
     </ScrollView>
   );
