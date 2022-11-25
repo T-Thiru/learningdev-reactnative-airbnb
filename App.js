@@ -15,6 +15,7 @@ import ArrounMeScreen from "./containers/ArrounMeScreen";
 import { Entypo } from "@expo/vector-icons";
 import RoomScreen from "./containers/RoomScreen";
 import TitleLogo from "./components/TitleLogo";
+import ProfileLogo from "./components/ProfileLogo";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -95,6 +96,7 @@ export default function App() {
                       <Stack.Navigator
                         screenOptions={{
                           headerTitle: (props) => <TitleLogo {...props} />,
+                          headerRight: () => <ProfileLogo />,
                         }}
                       >
                         <Stack.Screen
@@ -122,11 +124,9 @@ export default function App() {
 
                         <Stack.Screen
                           name="Profile"
-                          options={
-                            {
-                              // title: "User Profile",
-                            }
-                          }
+                          options={{
+                            title: "My Profile",
+                          }}
                         >
                           {() => <ProfileScreen user={user} />}
                         </Stack.Screen>
